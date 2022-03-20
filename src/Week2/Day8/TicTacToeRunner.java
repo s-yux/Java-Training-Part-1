@@ -31,7 +31,7 @@ class TicTacToe {
             System.out.println("Current Turn: " + noOfTurns);
             return true;
         } else {
-            System.out.println("Board occupied!");
+            System.out.println("Position occupied!");
             return false;
         }
     }
@@ -123,6 +123,8 @@ public class TicTacToeRunner {
 
     public static void main(String[] args) {
         int pos;
+        char choice;
+        boolean isPvP;
         int[] cpuCoord = new int[2];
         char[][] board =
                 {
@@ -136,26 +138,49 @@ public class TicTacToeRunner {
         Random random = new Random();
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Do you want to battle a real player? (y/n)");
+        choice = sc.next().charAt(0);
+        isPvP = choice == 'Y' || choice == 'y';
+
         do {
-            System.out.println("Please enter desired position: ");
-            pos = sc.nextInt();
-            if (ticTacToe.isValid(pos) && !ticTacToe.isOccupied(ticTacToe.posMapping(pos))) {
-                ticTacToe.setBoard(pos, 'X');
-                ticTacToe.displayBoard();
-                ticTacToe.evaluateBoard();
+            if (isPvP) {
+                if (TicTacToe.noOfTurns % 2 == 0) {
+                    System.out.println("Player 1, please enter desired position: ");
+                } else if (TicTacToe.noOfTurns % 2 == 1) {
+                    System.out.println("Player 2, please enter desired position: ");
+                }
+                pos = sc.nextInt();
+                if (ticTacToe.isValid(pos) && !ticTacToe.isOccupied(ticTacToe.posMapping(pos))) {
+                    ticTacToe.setBoard(pos, TicTacToe.noOfTurns % 2 == 0 ? 'X' : 'O');
+                    ticTacToe.displayBoard();
+                    ticTacToe.evaluateBoard();
+                } else {
+                    System.out.println("Invalid Position!");
+                }
 
-                do {
-                    pos = 1 + random.nextInt(9);
-                    cpuCoord = ticTacToe.posMapping(pos);
-                } while (ticTacToe.isOccupied(cpuCoord));
-
-                System.out.println("CPU setting position: " + pos);
-                ticTacToe.setBoard(pos, 'O');
-                ticTacToe.displayBoard();
-                ticTacToe.evaluateBoard();
             } else {
-                System.out.println("Invalid Position!");
+                System.out.println("Player, please enter desired position: ");
+                pos = sc.nextInt();
+                if (ticTacToe.isValid(pos) && !ticTacToe.isOccupied(ticTacToe.posMapping(pos))) {
+                    ticTacToe.setBoard(pos, 'X');
+                    ticTacToe.displayBoard();
+                    ticTacToe.evaluateBoard();
+
+                    do {
+                        pos = 1 + random.nextInt(9);
+                        cpuCoord = ticTacToe.posMapping(pos);
+                    } while (ticTacToe.isOccupied(cpuCoord));
+
+                    System.out.println("CPU setting position: " + pos);
+                    ticTacToe.setBoard(pos, 'O');
+                    ticTacToe.displayBoard();
+                    ticTacToe.evaluateBoard();
+                } else {
+                    System.out.println("Invalid Position!");
+                }
             }
+
+
         } while (TicTacToe.noOfTurns != 9);
     }
 }
