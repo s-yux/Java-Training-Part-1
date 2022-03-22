@@ -59,5 +59,10 @@ public class InheritancePractise {
         airport.permit(pp);
         airport.permit(cp);
         airport.permit(fp);
+
+        Plane plane = new Plane();
+
+        plane = cp;
+        ((CargoPlane)(plane)).carryCargo();
     }
 }
