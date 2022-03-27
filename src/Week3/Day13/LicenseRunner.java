@@ -9,7 +9,7 @@ class UnderageException extends Exception{
     }
 }
 
-class Branch1{
+class Branch{
     int age;
 
     void apply(){
@@ -21,46 +21,7 @@ class Branch1{
     void verify() throws UnderageException{
         if(age>=18){
             System.out.println("License Issued");
-        }else {
-            UnderageException ue = new UnderageException();
-            System.out.println("In Branch 1: " + ue.getMessage());
-            throw ue;
-        }
-    }
-}
-
-class Branch2{
-    int age;
-
-    void apply(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter your age: ");
-        age = sc.nextInt();
-    }
-
-    void verify() throws UnderageException{
-        if(age>=18){
-            System.out.println("License Issued");
-        }else {
-            UnderageException ue = new UnderageException();
-            System.out.println("In Branch 1: " + ue.getMessage());
-            throw ue;
-        }
-    }
-}
-
-class Branch3{
-    int age;
-
-    void apply(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter your age: ");
-        age = sc.nextInt();
-    }
-
-    void verify() throws UnderageException{
-        if(age>=18){
-            System.out.println("License Issued");
+            System.exit(0);
         }else {
             UnderageException ue = new UnderageException();
             System.out.println("In Branch 1: " + ue.getMessage());
@@ -72,15 +33,15 @@ class Branch3{
 class HeadOffice{
     void initiate(){
         try{
-            Branch1 b1 = new Branch1();
+            Branch b1 = new Branch();
             b1.apply();
             b1.verify();
 
-            Branch2 b2 = new Branch2();
+            Branch b2 = new Branch();
             b2.apply();
             b2.verify();
 
-            Branch3 b3 = new Branch3();
+            Branch b3 = new Branch();
             b3.apply();
             b3.verify();
         }catch (UnderageException e){
