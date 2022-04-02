@@ -3,16 +3,15 @@ package Week4.Day18_JDBC;
 import oracle.jdbc.OracleDriver;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class MyFirstJDBC {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        Connection con;
-        Statement stmt;
-        PreparedStatement pstmt;
+        Connection con = null;
+        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet res;
 
         try {
@@ -104,7 +103,7 @@ public class MyFirstJDBC {
 //            pstmt.setInt(1, marks1);
 //            pstmt.setInt(2, id1);
 //
-//            pstmt.executeUpdate();
+//            int row1 = pstmt.executeUpdate();
 //
 //            System.out.println("Enter ID of student");
 //            int id2 = sc.nextInt();
@@ -113,24 +112,40 @@ public class MyFirstJDBC {
 //            pstmt.setInt(1, marks2);
 //            pstmt.setInt(2, id2);
 //
-//            pstmt.executeUpdate();
+//            int row2 = pstmt.executeUpdate();
 //
-//            con.commit();       //Only this will "execute" all the SQL queries in case something happen halfway.
+//            if(row1 > 0 && row2 > 0){
+//                con.commit();       //Only this will "execute" all the SQL queries in case something happen halfway.
+//            }
 
-            pstmt = con.prepareStatement("UPDATE STUDENT SET marks1=? WHERE id=?");
-            pstmt.setInt(1, 10);
-            pstmt.setInt(2, 1);
-            pstmt.addBatch();
-            pstmt.setInt(1, 20);
-            pstmt.setInt(2, 2);
-            pstmt.addBatch();
-            pstmt.setInt(1, 30);
-            pstmt.setInt(2, 3);
-            pstmt.addBatch();
-            System.out.println(Arrays.toString(pstmt.executeBatch()));
+            //Batch update
+            stmt = con.createStatement();
+            stmt.addBatch("UPDATE STUDENT SET marks3=44 WHERE id=1");
+            stmt.addBatch("UPDATE STUDENT SET marks3=55 WHERE id=2");
+            stmt.addBatch("UPDATE STUDENT SET marks3=66 WHERE id=3");
+            System.out.println(Arrays.toString(stmt.executeBatch()));
 
-        } catch (SQLException e) {
+//            //Another way of doing batch update
+//            pstmt = con.prepareStatement("UPDATE STUDENT SET marks1=? WHERE id=?");
+//            pstmt.setInt(1, 10);
+//            pstmt.setInt(2, 1);
+//            pstmt.addBatch();
+//            pstmt.setInt(1, 20);
+//            pstmt.setInt(2, 2);
+//            pstmt.addBatch();
+//            pstmt.setInt(1, 30);
+//            pstmt.setInt(2, 3);
+//            pstmt.addBatch();
+//            System.out.println(Arrays.toString(pstmt.executeBatch()));
+
+        } catch (Exception e) {
+            con.rollback();
+            System.out.println("All changes undone!");
             e.printStackTrace();
+        } finally {
+            con.close();
+            stmt.close();
+            pstmt.close();
         }
     }
 }
